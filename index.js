@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const path = require('path');
 const fs = require('fs');
 const program = require('commander');
 const packageJson = require('./package.json');
@@ -9,6 +10,7 @@ const ora = require('ora');
 const logSymbols = require('log-symbols');
 const semver = require('semver');
 const { checkTime } = require('./util');
+const { execSync } = require('child_process');
 
 const spinner = ora('Loading unicorns');
 
@@ -45,7 +47,18 @@ const downloadCallback = (answer, err) => {
 
     fs.writeFileSync(filename, _newPagJson);
 
+    process.chdir(path.join(process.cwd(), answer.name));
+    execSync('npm i');
+
     console.log(logSymbols.success, '成功了同学，来吧，展示！');
+    console.log(`
+    `);
+    console.log(logSymbols.info, `first setp：$ cd ${answer.name}`);
+    console.log(`
+    `);
+    console.log(logSymbols.info, `second setp：$ npm run dev`);
+    console.log(`
+    `);
   }
 };
 
