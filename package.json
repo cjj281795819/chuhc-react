@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.4.0",
     "commander": "^6.0.0",
     "download-git-repo": "^3.0.2",
     "handlebars": "^4.7.6",

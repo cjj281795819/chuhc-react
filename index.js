@@ -9,6 +9,7 @@ const inputer = require('inquirer');
 const ora = require('ora');
 const logSymbols = require('log-symbols');
 const semver = require('semver');
+const colors = require('colors');
 const { checkTime } = require('./util');
 const { execSync } = require('child_process');
 
@@ -47,16 +48,20 @@ const downloadCallback = (answer, err) => {
 
     fs.writeFileSync(filename, _newPagJson);
 
+    spinner.color = 'green';
+    spinner.text = '正在疯狂为你拉node_modules';
+    spinner.start();
+
     process.chdir(path.join(process.cwd(), answer.name));
     execSync('npm i');
+
+    spinner.stop();
 
     console.log(logSymbols.success, '成功了同学，来吧，展示！');
     console.log(`
     `);
-    console.log(logSymbols.info, `first setp：$ cd ${answer.name}`);
-    console.log(`
-    `);
-    console.log(logSymbols.info, `second setp：$ npm run dev`);
+    console.log(logSymbols.info, `first setp：$ cd ${answer.name}`.blue);
+    console.log(logSymbols.info, `second setp：$ npm run dev`.blue);
     console.log(`
     `);
   }
