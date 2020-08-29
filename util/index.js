@@ -9,7 +9,7 @@ const timePath = resolve('index.txt');
 const MAX_TIME = 86400000;
 
 const checkTime = () => {
-  const lastTime = ~~fs.readFileSync(timePath);
+  const lastTime = +fs.readFileSync(timePath).toString();
   const nowTime = new Date().getTime();
 
   if (lastTime && nowTime - lastTime <= MAX_TIME) {
