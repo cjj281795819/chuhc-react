@@ -11,9 +11,9 @@ const logSymbols = require('log-symbols');
 const semver = require('semver');
 const colors = require('colors');
 const { checkTime } = require('./util');
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
 
-const spinner = ora('Loading unicorns');
+const loading = ora('Loading unicorns');
 
 program.version(packageJson.version, '-v, --version');
 
@@ -25,13 +25,15 @@ const LANG_LIST = {
 const downloadAdress = lang =>
   `cjj281795819/jiangyuer-react#${LANG_LIST[lang]}`;
 
-const downloadCallback = (answer, err) => {
-  spinner.stop();
+const downloadCallback = async (answer, err) => {
+  loading.stop();
 
   if (err) {
     console.log(logSymbols.error, '我好像遇到问题了');
     return;
   }
+
+  console.log(logSymbols.success, '项目创建成功！');
 
   const filename = `${answer.name}/package.json`;
 
@@ -48,14 +50,21 @@ const downloadCallback = (answer, err) => {
 
     fs.writeFileSync(filename, _newPagJson);
 
-    spinner.color = 'green';
-    spinner.text = '正在疯狂为你拉node_modules';
-    spinner.start();
+    loading.color = 'green';
+    loading.text = '正在疯狂为你拉node_modules';
 
-    process.chdir(path.join(process.cwd(), answer.name));
-    execSync('npm i');
+    loading.start();
 
-    spinner.stop();
+    const pullNodeModules = new Promise(res => {
+      process.chdir(path.join(process.cwd(), answer.name));
+      exec('npm i', () => {
+        res(1);
+      });
+    });
+
+    await pullNodeModules;
+
+    loading.stop();
 
     console.log(logSymbols.success, '成功了同学，来吧，展示！');
     console.log(`
@@ -64,6 +73,8 @@ const downloadCallback = (answer, err) => {
     console.log(logSymbols.info, `second setp：$ npm run dev`.blue);
     console.log(`
     `);
+  } else {
+    console.log(logSymbols.error, '我好像遇到问题了');
   }
 };
 
@@ -86,7 +97,7 @@ program
       {
         type: 'input',
         name: 'name',
-        message: '请输入项目名称（英文、数字、下划线）',
+        message: '请输入项目名称',
       },
       {
         type: 'input',
@@ -112,9 +123,9 @@ program
       downloadCallback.bind(null, answer),
     );
 
-    spinner.color = 'green';
-    spinner.text = '我正在疯狂为你加载中';
-    spinner.start();
+    loading.color = 'green';
+    loading.text = '我正在疯狂为你加载中';
+    loading.start();
   });
 
 program.on('command:*', function() {
