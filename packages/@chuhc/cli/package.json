@@ -1,0 +1,26 @@
+{
+  "name": "@chuhc/cli",
+  "version": "1.0.0",
+  "description": "江鱼儿脚手架cli部分",
+  "main": "index.js",
+  "bin": {
+    "chuhc": "./bin/chuhc.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "chuhc",
+    "@chuhc/cli"
+  ],
+  "author": "cjj281795819",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "commander": "^6.1.0",
+    "fs-extra": "^9.0.1",
+    "inquirer": "^7.3.3",
+    "validate-npm-package-name": "^3.0.0"
+  }
+}

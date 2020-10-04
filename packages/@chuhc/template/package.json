@@ -1,0 +1,16 @@
+{
+  "name": "@chuhc/template",
+  "version": "1.0.0",
+  "description": "江鱼儿脚手架template部分",
+  "main": "index.js",
+  "keywords": [
+    "react",
+    "chuhc",
+    "@chuhc/template"
+  ],
+  "author": "cjj281795819",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^9.0.1"
+  }
+}

@@ -19,7 +19,7 @@ program.version(packageJson.version, '-v, --version');
 
 const LANG_LIST = {
   typescript: 'master',
-  javascript: 'lang/js',
+  javascript: 'lang/js'
 };
 
 const downloadAdress = lang =>
@@ -87,7 +87,7 @@ program
     if (checkResult && semver.gt(checkResult, packageJson.version)) {
       console.log(
         logSymbols.error,
-        `当前版本过低，请及时更新版本至${checkResult}`,
+        `当前版本过低，请及时更新版本至${checkResult}`
       );
 
       process.exit(1);
@@ -97,30 +97,30 @@ program
       {
         type: 'input',
         name: 'name',
-        message: '请输入项目名称',
+        message: '请输入项目名称'
       },
       {
         type: 'input',
         name: 'author',
-        message: '请输入项目作者名',
+        message: '请输入项目作者名'
       },
       {
         type: 'input',
         name: 'description',
-        message: '请输入项目介绍',
+        message: '请输入项目介绍'
       },
       {
         type: 'list',
         message: '使用哪种语言进行开发',
         name: 'lang',
-        choices: ['typescript', 'javascript'],
-      },
+        choices: ['typescript', 'javascript']
+      }
     ]);
 
     download(
       downloadAdress(answer.lang),
       `./${answer.name}`,
-      downloadCallback.bind(null, answer),
+      downloadCallback.bind(null, answer)
     );
 
     loading.color = 'green';
