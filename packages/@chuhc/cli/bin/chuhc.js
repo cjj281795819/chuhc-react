@@ -13,11 +13,18 @@ program
 program
   .command('create <app-name>')
   .description('create project')
-  .action(name => {
+  .action((name) => {
     require('../lib/create.js')(name);
   });
 
-program.arguments('<command>').action(cmd => {
+program
+  .command('update')
+  .description('@chuhc/cli update')
+  .action(() => {
+    require('../lib/update.js')();
+  });
+
+program.arguments('<command>').action((cmd) => {
   program.outputHelp();
   console.log();
   console.log(`    ${chalk.red(`Unknown command ${chalk.yellow(cmd)}.`)}`);

@@ -9,6 +9,7 @@ const catchFn = require('./util/catchFn');
 const PackageManager = require('./PackageManager');
 const writeFileTree = require('./util/writeFileTree');
 const template = require('@chuhc/template');
+const { beforeCreate } = require('./util/checkVersion');
 const { clear, validateName, forEachSetV } = require('./util');
 const { setPkg, setPkgScripts, getPluginOptions } = require('./util/pkg');
 
@@ -17,12 +18,12 @@ const loading = ora();
 const CHUHC_PLUGIN_CHECK = [
   {
     name: 'Typescript',
-    value: ['tsx', '@chuhc/plugin-typescript']
+    value: ['tsx', '@chuhc/plugin-typescript'],
   },
   {
     name: 'Less',
-    value: ['less', '@chuhc/plugin-less']
-  }
+    value: ['less', '@chuhc/plugin-less'],
+  },
 ];
 
 async function create(pkgName) {
@@ -31,23 +32,24 @@ async function create(pkgName) {
   const cwd = process.cwd();
   const targetDir = path.join(cwd, pkgName);
 
+  await beforeCreate();
+
   if (fs.existsSync(targetDir)) {
     clear();
 
-    const answer = await inquirer.prompt([
+    const { overwrite } = await inquirer.prompt([
       {
         type: 'list',
         message: `Target directory already exists. Can I overwrite it`,
-        name: 'lang',
+        name: 'overwrite',
         choices: [
           { name: 'Yes', value: true },
-          { name: 'No', value: false }
-        ]
-      }
+          { name: 'No', value: false },
+        ],
+      },
     ]);
 
-    answer || process.exit(1);
-
+    overwrite || process.exit(1);
     await fs.remove(targetDir);
   }
 
@@ -58,8 +60,8 @@ async function create(pkgName) {
       type: 'checkbox',
       name: 'plugins',
       message: 'Do you need these plugins',
-      choices: CHUHC_PLUGIN_CHECK
-    }
+      choices: CHUHC_PLUGIN_CHECK,
+    },
   ]);
 
   loading.start('loading');
@@ -71,19 +73,19 @@ async function create(pkgName) {
   const pkg = setPkg({
     name: pkgName,
     dependencies: {},
-    devDependencies: {}
+    devDependencies: {},
   });
   const depe = ['react', 'react-dom'];
 
   options.config = {
-    plugins: devD
+    plugins: devD.map((item) => [item, {}]),
   };
 
   devD.push('babel-eslint', '@chuhc/scripts');
 
   const promise = [
     ...forEachSetV(depe, pkg, 'dependencies'),
-    ...forEachSetV(devD, pkg, 'devDependencies')
+    ...forEachSetV(devD, pkg, 'devDependencies'),
   ];
 
   await Promise.all(promise);
@@ -92,7 +94,7 @@ async function create(pkgName) {
   pm.cdPath();
 
   writeFileTree(targetDir, {
-    'package.json': JSON.stringify(pkg, null, 2)
+    'package.json': JSON.stringify(pkg, null, 2),
   });
 
   loading.succeed('🚀 Initialization successful!');

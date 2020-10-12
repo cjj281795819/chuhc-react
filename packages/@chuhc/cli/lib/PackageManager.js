@@ -8,12 +8,12 @@ const { hasYarn, hasCnpm } = require('./util/env');
 const PM_CONFIG = {
   npm: {
     install: ['install', '--loglevel', 'error'],
-    remove: ['uninstall', '--loglevel', 'error']
+    remove: ['uninstall', '--loglevel', 'error'],
   },
   yarn: {
     install: [],
-    remove: ['remove']
-  }
+    remove: ['remove'],
+  },
 };
 PM_CONFIG.cnpm = PM_CONFIG.npm;
 

@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 const path = require('path');
 
 const copyPageFiles = (cwd, tempSrc, { tsx, less }) => {
-  ['index', 'home'].forEach(item => {
+  ['index', 'home'].forEach((item) => {
     const src = path.join(tempSrc, `src/${item}/index`);
     const destSrc = `${cwd}/${item}/index`;
 
@@ -33,7 +33,7 @@ module.exports = ({ tsx, less, git, config = {} }) => {
   const tempSrc = path.join(__dirname, './template');
   const files = fs.readdirSync(tempSrc);
 
-  files.forEach(file => {
+  files.forEach((file) => {
     const src = path.join(tempSrc, file);
     const destSrc = `${cwd}/${file}`;
 
@@ -48,15 +48,23 @@ module.exports = ({ tsx, less, git, config = {} }) => {
       }
 
       case 'tsconfig.json': {
-        if (!tsx) {
-          break;
+        if (tsx) {
+          fs.copySync(src, destSrc);
         }
+        break;
       }
 
-      case '.gitignore': {
-        if (!git) {
-          break;
+      case 'gitignore': {
+        if (git) {
+          const dirname = path.dirname(destSrc);
+          const newSrc = path.join(dirname, '.gitignore');
+          const content = fs.readFileSync(src).toString();
+          console.log(src);
+          console.log(dirname);
+          console.log(newSrc);
+          fs.writeFileSync(newSrc, content);
         }
+        break;
       }
 
       case 'chuhc.config.js': {

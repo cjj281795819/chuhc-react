@@ -14,7 +14,7 @@ const config = new Config();
 const handleChuhcConfig = ({ plugins } = {}) => {
   if (plugins) {
     plugins.forEach(plugin => {
-      require(plugin[0])(config);
+      require(plugin[0])(config, plugin[1]);
     });
   }
 };

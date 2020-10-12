@@ -1,6 +1,6 @@
 {
   "name": "@chuhc/plugin-typescript",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "江鱼儿呃呃呃ts插件",
   "main": "index.js",
   "scripts": {
