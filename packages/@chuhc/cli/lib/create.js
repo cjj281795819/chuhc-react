@@ -3,16 +3,25 @@
  */
 const fs = require('fs-extra');
 const path = require('path');
+const ora = require('ora');
 const inquirer = require('inquirer');
 const catchFn = require('./util/catchFn');
 const PackageManager = require('./PackageManager');
 const writeFileTree = require('./util/writeFileTree');
+const template = require('@chuhc/template');
 const { clear, validateName, forEachSetV } = require('./util');
+const { setPkg, setPkgScripts, getPluginOptions } = require('./util/pkg');
 
-const JYE_PLUGIN_CHECK = [
+const loading = ora();
+
+const CHUHC_PLUGIN_CHECK = [
   {
     name: 'Typescript',
-    value: ['@jye/typescript-plugin', '@types/react', '@types/react-dom']
+    value: ['tsx', '@chuhc/plugin-typescript']
+  },
+  {
+    name: 'Less',
+    value: ['less', '@chuhc/plugin-less']
   }
 ];
 
@@ -44,39 +53,61 @@ async function create(pkgName) {
 
   clear();
 
-  const { plugins } = await inquirer.prompt([
+  const { plugins: morePlugins } = await inquirer.prompt([
     {
       type: 'checkbox',
       name: 'plugins',
       message: 'Do you need these plugins',
-      choices: JYE_PLUGIN_CHECK
+      choices: CHUHC_PLUGIN_CHECK
     }
   ]);
 
+  loading.start('loading');
+
   fs.mkdirSync(targetDir);
 
+  const { options, plugins: devD } = getPluginOptions(morePlugins);
   const pm = new PackageManager({ pkgName });
-
-  const pkg = {
+  const pkg = setPkg({
     name: pkgName,
-    version: '1.0.0',
-    private: true,
     dependencies: {},
     devDependencies: {}
+  });
+  const depe = ['react', 'react-dom'];
+
+  options.config = {
+    plugins: devD
   };
 
-  const deps = ['react', 'react-dom', 'babel-eslint'];
+  devD.push('babel-eslint', '@chuhc/scripts');
 
-  forEachSetV(deps, pkg, 'dependencies');
-  forEachSetV(plugins, pkg, 'devDependencies');
+  const promise = [
+    ...forEachSetV(depe, pkg, 'dependencies'),
+    ...forEachSetV(devD, pkg, 'devDependencies')
+  ];
 
+  await Promise.all(promise);
+
+  setPkgScripts(pkg);
   pm.cdPath();
 
   writeFileTree(targetDir, {
     'package.json': JSON.stringify(pkg, null, 2)
   });
 
+  loading.succeed('🚀 Initialization successful!');
+
   pm.install();
+
+  options.git = pm.git();
+
+  template(options);
+
+  loading.succeed('🎉 Successfully created project!');
+  console.log();
+  console.log(`$ cd ${pkgName}`);
+  console.log('$ npm run dev');
+  console.log();
 }
 
 module.exports = (...args) => catchFn(create, ...args);

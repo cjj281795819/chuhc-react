@@ -3,12 +3,12 @@
  */
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const deveConfig = require('./config/webpack.deve');
+const { getDeveConfig } = require('./config');
 
 module.exports = () => {
-  const { devServer } = deveConfig;
-  const compiler = webpack(deveConfig);
+  const DEVE_CONFIG = getDeveConfig();
+  const { devServer } = DEVE_CONFIG;
+  const compiler = webpack(DEVE_CONFIG);
   const server = new WebpackDevServer(compiler, { ...devServer });
-
   server.listen(devServer.port);
 };

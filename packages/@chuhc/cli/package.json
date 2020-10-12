@@ -17,6 +17,7 @@
   "author": "cjj281795819",
   "license": "ISC",
   "dependencies": {
+    "@chuhc/template": "1.0.5",
     "chalk": "^4.1.0",
     "commander": "^6.1.0",
     "fs-extra": "^9.0.1",

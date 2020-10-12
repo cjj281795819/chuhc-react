@@ -2,11 +2,12 @@
  * webpack build
  */
 const webpack = require('webpack');
-const prodConfig = require('./config/webpack.prod');
+const { getProdConfig } = require('./config');
 const logSymbols = require('log-symbols');
 
 module.exports = () => {
-  const compiler = webpack(prodConfig);
+  const PROD_CONFIG = getProdConfig();
+  const compiler = webpack(PROD_CONFIG);
 
   compiler.run((err, stats) => {
     if (err) {

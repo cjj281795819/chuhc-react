@@ -4,9 +4,10 @@
  */
 const program = require('commander');
 const pkg = require('../package.json');
+const chalk = require('chalk');
 
 program
-  .version(`@jye/cli ${pkg.version}`, '-v -version')
+  .version(`@chuhc/cli ${pkg.version}`, '-v -version')
   .usage('<command> [options]');
 
 program

@@ -1,7 +1,8 @@
 /**
  * some fn
  */
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
+const { hasCnpm } = require('./env');
 const chalk = require('chalk');
 const validateNpmPackageName = require('validate-npm-package-name');
 
@@ -38,30 +39,32 @@ const validateName = name => {
 };
 
 /**
- * get last version
- */
-const getNpmPkgVersion = name => {
-  const version = execSync(`npm view ${name} version`).toString();
-  return version.slice(0, version.length - 1);
-};
-
-/**
  * set package.json npm package
  */
 const forEachSetV = (list, obj, key) => {
+  const promises = [];
+  const manager = hasCnpm() ? 'cnpm' : 'npm';
+
   list.forEach(item => {
     if (typeof item === 'object') {
       return forEachSetV(item, obj, key);
     }
 
-    const version = getNpmPkgVersion(item);
-    obj[key][item] = version;
+    const newPromise = new Promise(res => {
+      exec(`${manager} view ${item} version`, (err, stdout, stderr) => {
+        obj[key][item] = stdout.slice(0, stdout.length - 1);
+        res(0);
+      });
+    });
+
+    promises.push(newPromise);
   });
+
+  return promises;
 };
 
 module.exports = {
   clear,
   validateName,
-  getNpmPkgVersion,
   forEachSetV
 };

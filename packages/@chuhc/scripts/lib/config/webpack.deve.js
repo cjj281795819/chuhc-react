@@ -1,9 +1,8 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const merge = require('../util/merge');
 const { getPages } = require('../enrty');
-const { resolve } = require('../util');
+const { resolve, devServerAfter } = require('../util');
 
-module.exports = merge({
+module.exports = {
   mode: 'development',
   output: {
     filename: '[name].js',
@@ -21,6 +20,7 @@ module.exports = merge({
     compress: true,
     port: 9999,
     stats: 'errors-only',
-    hot: true
+    hot: true,
+    after: devServerAfter
   }
-});
+};

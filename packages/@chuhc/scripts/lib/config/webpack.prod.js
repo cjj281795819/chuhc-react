@@ -1,9 +1,9 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const merge = require('../util/merge');
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const { getPages } = require('../enrty');
 const { resolve } = require('../util');
 
-module.exports = merge({
+module.exports = {
   mode: 'production',
   output: {
     filename: '[name]-[contentHash:5].js',
@@ -24,6 +24,7 @@ module.exports = merge({
     ...getPages(true),
     new MiniCssExtractPlugin({
       filename: '[name]-[contentHash:5].css'
-    })
+    }),
+    new OptimizeCssAssetsWebpackPlugin()
   ]
-});
+};

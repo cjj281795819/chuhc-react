@@ -25,16 +25,14 @@ module.exports = {
       },
       {
         test: /\.(jpg|png|jpeg|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10240,
-              name: 'img/[name].[hash:7].[ext]',
-              esModule: false
-            }
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 10240,
+            name: 'img/[name].[hash:7].[ext]',
+            esModule: false
           }
-        ]
+        }
       }
     ]
   },
