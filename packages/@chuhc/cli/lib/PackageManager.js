@@ -15,6 +15,7 @@ const PM_CONFIG = {
     remove: ['remove']
   }
 };
+PM_CONFIG.cnpm = PM_CONFIG.npm;
 
 module.exports = class PackageManager {
   constructor({ pkgName }) {

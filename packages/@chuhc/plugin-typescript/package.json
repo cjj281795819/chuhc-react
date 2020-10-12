@@ -1,12 +1,16 @@
 {
-  "name": "plugin-typescript",
+  "name": "@chuhc/plugin-typescript",
   "version": "1.0.0",
   "description": "江鱼儿呃呃呃ts插件",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "chuhc",
+    "@chuhc/plugin-typescript"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

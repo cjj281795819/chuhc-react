@@ -1,6 +1,6 @@
 {
   "name": "@chuhc/cli",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "江鱼儿脚手架cli部分",
   "main": "index.js",
   "bin": {
@@ -17,7 +17,7 @@
   "author": "cjj281795819",
   "license": "ISC",
   "dependencies": {
-    "@chuhc/template": "1.0.5",
+    "@chuhc/template": "1.0.6",
     "chalk": "^4.1.0",
     "commander": "^6.1.0",
     "fs-extra": "^9.0.1",
