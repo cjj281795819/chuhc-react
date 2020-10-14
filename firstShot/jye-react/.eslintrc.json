@@ -1,0 +1,12 @@
+{
+  "parser": "@babel/eslint-parser",
+  "env": {
+    "commonjs": true,
+    "es6": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2016,
+    "sourceType": "module"
+  }
+}
