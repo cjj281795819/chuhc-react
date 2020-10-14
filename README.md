@@ -1,5 +1,12 @@
 # chuhc-cli 脚手架
 
+## 安装
+
+```
+$ npm i @chuhc/cli -g
+$ chuhc create test
+```
+
 ## 前言
 
 [掘金文章](https://juejin.im/post/6882681067971543047)
